@@ -1,6 +1,12 @@
 <header>
   <app-page-title />
 </header>
-<footer>
-  <app-theme-toggle />
-</footer>
+<mat-action-list>
+  @for (option of navOptions; track option.path) {
+    <a mat-list-item [routerLink]="option.path">{{ option.title }}</a>
+  }
+  <mat-list-item>
+    <app-theme-toggle />
+  </mat-list-item>
+</mat-action-list>
+<footer></footer>

@@ -10,7 +10,7 @@ html {
         primary: mat.$cyan-palette,
         tertiary: mat.$orange-palette,
       ),
-      typography: Roboto,
+      typography: Inter,
       density: -2,
     )
   );
@@ -25,6 +25,7 @@ body.dark-mode {
 body {
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+  font-family: var(--mat-sys-body-large-font), Inter, Arial, sans-serif;
   margin: 0;
   height: 100vh;
 }

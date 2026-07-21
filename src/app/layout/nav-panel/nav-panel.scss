@@ -6,9 +6,19 @@ $padding-2y: $padding-y * 2;
   height: calc(100dvh - $padding-2y);
   flex-direction: column;
   padding: $padding-y 20px;
+  align-items: center;
   background: var(--mat-sys-surface-container-low);
+}
+
+mat-action-list, [mat-list-item] {
+  display: flex;
+  flex-direction: column;
 }
 
 header {
   margin-bottom: 28px;
+}
+
+footer {
+  margin-top: auto;
 }

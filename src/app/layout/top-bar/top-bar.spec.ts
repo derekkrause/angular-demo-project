@@ -1,16 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ImageComponent } from './image';
 
-describe('Image', () => {
-  let component: ImageComponent;
-  let fixture: ComponentFixture<ImageComponent>;
+import { TopBar } from './top-bar';
+
+describe('TopBar', () => {
+  let component: TopBar;
+  let fixture: ComponentFixture<TopBar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImageComponent],
+      imports: [TopBar],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ImageComponent);
+    fixture = TestBed.createComponent(TopBar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

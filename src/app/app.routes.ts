@@ -11,4 +11,14 @@ export const routes: Routes = [
     title: 'Dashboard',
     loadComponent: () => import('@features/dashboard/dashboard'),
   },
+  {
+    path: 'not-found',
+    pathMatch: 'full',
+    title: 'Not Found',
+    loadComponent: () => import('@features/not-found/not-found'),
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
+  },
 ];

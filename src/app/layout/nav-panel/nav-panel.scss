@@ -1,0 +1,14 @@
+$padding-y: 24px;
+$padding-2y: $padding-y * 2;
+
+:host {
+  display: flex;
+  height: calc(100dvh - $padding-2y);
+  flex-direction: column;
+  padding: $padding-y 20px;
+  background: var(--mat-sys-surface-container-low);
+}
+
+header {
+  margin-bottom: 28px;
+}

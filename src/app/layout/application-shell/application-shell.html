@@ -1,1 +1,11 @@
-<app-navigation />
+<mat-sidenav-container class="app-shell" [hasBackdrop]="!isDesktop()">
+  <mat-sidenav opened [fixedInViewport]="fixedInViewport()">
+    <app-nav-panel />
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <main>
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,24 @@
+<div class="image-container" [style.aspect-ratio]="aspectRatio()" [class.image-loaded]="status() === 'loaded'">
+  @if (status() !== 'loaded') {
+    <div class="image-placeholder" role="status" aria-live="polite">
+      @if (status() === 'loading') {
+        <mat-icon class="placeholder-icon" aria-hidden="true">image</mat-icon>
+        <span>{{ loadingText() }}</span>
+      } @else {
+        <mat-icon class="placeholder-icon" aria-hidden="true">broken_image</mat-icon>
+        <span>{{ errorText() }}</span>
+      }
+    </div>
+  }
+
+  @if (status() !== 'error') {
+    <img
+      fill
+      [alt]="alt()"
+      [ngSrc]="src()"
+      [priority]="priority()"
+      (error)="imageFailed()"
+      (load)="imageLoaded()"
+    />
+  }
+</div>

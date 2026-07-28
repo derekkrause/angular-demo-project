@@ -1,0 +1,10 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>10 FDA Product Categories</mat-card-title>
+    <mat-card-subtitle>Last Updated: {{ productMeta().last_updated }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <app-bar-chart [data]="productResults()" [xAxisKey]="'count'" [yAxisKey]="'term'" [seriesKey]="'count'" />
+  </mat-card-content>
+  <mat-card-footer class="card-footer" align="end"></mat-card-footer>
+</mat-card>

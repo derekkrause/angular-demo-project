@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+html {
+  /* prettier-ignore */
+  @include mat.card-overrides((
+    elevated-container-color: var(--mat-sys-surface-container-low),
+    filled-container-color: var(--mat-sys-surface-container-low),
+    outlined-container-color: var(--mat-sys-surface-container-low),
+  ));
+}

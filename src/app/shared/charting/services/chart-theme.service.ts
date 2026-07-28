@@ -1,11 +1,18 @@
-import { DOCUMENT, inject, Service } from '@angular/core';
+import { computed, DOCUMENT, inject, Service, Signal } from '@angular/core';
+import { Theme, ThemeService } from '@app/core/theme/services/theme.service';
 import { ChartTheme } from '../chart-theme.model';
 
 @Service()
 export class ChartThemeService {
   readonly #document = inject(DOCUMENT);
+  readonly #themeService = inject(ThemeService);
 
-  getTheme(): ChartTheme {
+  readonly #currentTheme: Signal<Theme> = this.#themeService.theme;
+
+  activeChartTheme = computed<ChartTheme>(() => {
+    // read #currentTheme for changes
+    this.#currentTheme();
+
     const styles = getComputedStyle(this.#document.documentElement);
     const colorProbe = this.#document.createElement('span');
     colorProbe.style.display = 'none';
@@ -30,7 +37,7 @@ export class ChartThemeService {
     } finally {
       colorProbe.remove();
     }
-  }
+  });
 
   #read(styles: CSSStyleDeclaration, colorProbe: HTMLElement, property: string): string {
     const value = styles.getPropertyValue(property).trim();

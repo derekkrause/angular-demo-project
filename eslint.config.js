@@ -16,6 +16,7 @@ module.exports = defineConfig([
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       '@angular-eslint/directive-selector': [
         'error',
         {

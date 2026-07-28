@@ -1,10 +1,11 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { routes } from './app.routes';
+import { baseUrlInterceptor } from './core/interceptors/base-url-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       registerIcon('github_lockup_white', 'github-icons/github_lockup_white.svg', sanitizer, iconRegistry);
     }),
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([baseUrlInterceptor])),
     provideRouter(routes),
   ],
 };

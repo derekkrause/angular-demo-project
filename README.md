@@ -6,6 +6,18 @@ The application currently provides a responsive dashboard shell with navigation,
 
 You can test out the demo here: https://derekkrause.github.io/angular-demo-project/dashboard
 
+## Architecture Decisions
+- Angular v22
+- Standalone Architecture
+- Signals-first state management
+- Native Angular APIs / minimal third-party packages
+- Smart/presentational component boundaries
+- API services separated from application state
+- Testing Strategy
+- ECharts isolated behind application-owned components with
+  bundle size minimized using the tree-shakeable interface
+- Upgradeability as an explicit architectural requirement
+
 ## Technology
 
 - Angular 22.0.7

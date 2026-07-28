@@ -1,5 +1,4 @@
 import { afterNextRender, Component, effect, ElementRef, input, OnDestroy, viewChild } from '@angular/core';
-import { Theme } from '@app/core/theme/services/theme.service';
 import { ECharts, EChartsCoreOption } from 'echarts/core';
 import { ChartTheme } from '../../chart-theme.model';
 import { echarts } from '../../echarts.registry';
@@ -12,8 +11,7 @@ import { echarts } from '../../echarts.registry';
 export class EchartsBaseChart implements OnDestroy {
   readonly ariaLabel = input.required<string>();
   readonly options = input.required<EChartsCoreOption>();
-  readonly userSelectedTheme = input.required<Theme>();
-  readonly chartTheme = input<ChartTheme | undefined>();
+  readonly chartTheme = input.required<ChartTheme>();
 
   readonly chartContainer = viewChild.required<ElementRef<HTMLDivElement>>('chartContainer');
 
@@ -31,7 +29,7 @@ export class EchartsBaseChart implements OnDestroy {
       const options = this.options();
 
       // Establish reactive dependency on theme/render changes.
-      this.userSelectedTheme();
+      this.chartTheme();
 
       this.#updateChart(options);
     });

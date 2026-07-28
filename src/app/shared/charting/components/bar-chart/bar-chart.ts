@@ -1,8 +1,8 @@
-import { Component, computed, inject, input } from '@angular/core';
-import { EchartsBaseChart } from '../echarts-base-chart/echarts-base-chart';
-import { ChartThemeService } from '../../services/chart-theme.service';
-import { Theme, ThemeService } from '@app/core/theme/services/theme.service';
+import { Component, computed, inject, input, Signal, untracked } from '@angular/core';
 import { EChartsCoreOption } from 'echarts/core';
+import { ChartTheme } from '../../chart-theme.model';
+import { ChartThemeService } from '../../services/chart-theme.service';
+import { EchartsBaseChart } from '../echarts-base-chart/echarts-base-chart';
 
 @Component({
   selector: 'app-bar-chart',
@@ -10,31 +10,38 @@ import { EChartsCoreOption } from 'echarts/core';
   templateUrl: './bar-chart.html',
   styleUrl: './bar-chart.scss',
 })
-export class BarChart<T extends { x: string | number, y: string | number }> {
-  readonly #appThemeService = inject(ThemeService);
+export class BarChart<T> {
   readonly #chartThemeService = inject(ChartThemeService);
 
   readonly data = input.required<T[]>();
+  readonly xAxisKey = input.required<keyof T>();
+  readonly yAxisKey = input.required<keyof T>();
+  readonly seriesKey = input.required<keyof T>();
 
-  protected readonly userSelectedTheme = computed<Theme>(() => {
-    return this.#appThemeService.isDarkMode() ? 'dark' : 'light';
-  });
+  protected readonly currentTheme: Signal<ChartTheme> = this.#chartThemeService.activeChartTheme;
 
   protected readonly ariaLabel = computed<string>(() => {
-    const summary = this.data().map(item => `${item.x}: ${item.y}`).join(', ');
+    const xKey = untracked(() => this.xAxisKey());
+    const yKey = untracked(() => this.yAxisKey());
+    const summary = this.data()
+      .map((item) => `${item[xKey]}: ${item[yKey]}`)
+      .join(', ');
     return `Bar chart showing the following data: ${summary}`;
   });
 
   protected readonly chartOptions = computed<EChartsCoreOption>(() => {
-    // reading to update options when theme changes
-    this.#appThemeService.isDarkMode();
+    // Keys should not change. Only want to update when data or theme changes.
+    const xKey: keyof T = untracked(() => this.xAxisKey());
+    const yKey: keyof T = untracked(() => this.yAxisKey());
+    const seriesKey: keyof T = untracked(() => this.seriesKey());
 
-    const theme = this.#chartThemeService.getTheme();
+    // Tracking changes to activeChartTheme;
+    const theme = this.currentTheme();
 
     return {
       backgroundColor: theme.surfaceContainer,
 
-      color: [theme.error, theme.primary, theme.secondary],
+      color: [theme.primary, theme.secondary, theme.tertiary],
 
       aria: {
         enabled: true,
@@ -67,7 +74,7 @@ export class BarChart<T extends { x: string | number, y: string | number }> {
         type: 'value',
         min: 0,
         minInterval: 1,
-        data: this.data().map((item) => item.y),
+        data: this.data().map((item) => item[xKey]),
 
         axisLine: {
           lineStyle: {
@@ -86,7 +93,7 @@ export class BarChart<T extends { x: string | number, y: string | number }> {
 
       yAxis: {
         type: 'category',
-        data: this.data().map(item => item.y),
+        data: this.data().map((item) => item[yKey]),
 
         axisLabel: {
           color: theme.mutedText,
@@ -104,7 +111,7 @@ export class BarChart<T extends { x: string | number, y: string | number }> {
           name: 'Products',
           type: 'bar',
 
-          data: this.data().map((item) => item.x),
+          data: this.data().map((item) => item[seriesKey]),
 
           barMaxWidth: 72,
 

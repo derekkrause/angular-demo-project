@@ -12,6 +12,11 @@ export const routes: Routes = [
     loadComponent: () => import('@features/dashboard/dashboard'),
   },
   {
+    path: 'reports',
+    title: 'Reports',
+    loadComponent: () => import('@features/reports/reports'),
+  },
+  {
     path: 'not-found',
     pathMatch: 'full',
     title: 'Not Found',

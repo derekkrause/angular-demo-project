@@ -48,7 +48,10 @@ export class EchartsBaseChart implements OnDestroy {
 
     this.#chart = echarts.init(container, this.chartTheme());
 
-    this.#resizeObserver?.observe(container);
+    this.#resizeObserver = new ResizeObserver(() => {
+      this.#chart?.resize();
+    });
+    this.#resizeObserver.observe(container);
 
     this.#updateChart(this.options());
   }

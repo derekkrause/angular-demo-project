@@ -2,8 +2,17 @@
   // For more information, visit: https://angular.dev/ai/mcp
   "servers": {
     "angular-cli": {
-      "command": "corepack",
-      "args": ["pnpm", "dlx", "@angular/cli", "mcp"]
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "C:/Program Files/nodejs/node_modules/npm/bin/npx-cli.js",
+        "--yes",
+        "--package",
+        "@angular/cli@22.0.7",
+        "ng",
+        "mcp"
+      ],
+      "cwd": "${workspaceFolder}"
     }
   }
 }

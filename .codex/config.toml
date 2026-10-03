@@ -1,0 +1,11 @@
+# Workspace-scoped Angular MCP connection for Codex on this Windows machine.
+[mcp_servers.angular-cli]
+command = 'C:\Program Files\nodejs\node.exe'
+args = ['C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js', '--cache', 'C:\Users\kraus\AppData\Local\Temp\angular-mcp-npm-cache', '--yes', '--package', '@angular/cli@22.0.7', 'ng', 'mcp']
+cwd = 'C:\Users\kraus\angular-demo-project'
+startup_timeout_sec = 120
+tool_timeout_sec = 180
+enabled = true
+
+[mcp_servers.angular-cli.tools.run_target]
+approval_mode = "approve"

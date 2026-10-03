@@ -49,11 +49,30 @@ The development server opens the application at `http://localhost:4200/` and rel
 
 ## Development commands
 
-Run a production build:
+Run a development build (the default):
 
 ```bash
 pnpm build
 ```
+
+Run an optimized production build:
+
+```bash
+pnpm build:prod
+```
+
+Watch and rebuild using either configuration:
+
+```bash
+pnpm watch
+pnpm watch:prod
+```
+
+Development uses `src/environments/environment.ts`. Production replaces it with
+`src/environments/environment.prod.ts` through Angular CLI file replacements.
+Both currently use the same public FDA API; the two configurations demonstrate
+environment selection rather than separate deployed backends. `pnpm start` also
+defaults to development. The GitHub Pages workflow explicitly selects production.
 
 Run unit tests:
 
@@ -82,5 +101,8 @@ pnpm ng generate component component-name
 For the available schematics and options, run `pnpm ng generate --help`.
 
 ## Additional resources
+
+See the [application review and improvement plan](./docs/angular-review.md) for
+the current verification results and prioritized next steps.
 
 See the [Angular CLI documentation](https://angular.dev/tools/cli) for complete command guidance.

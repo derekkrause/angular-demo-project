@@ -16,6 +16,7 @@ export class BarChart<T> {
   readonly data = input.required<T[]>();
   readonly xAxisKey = input.required<keyof T>();
   readonly yAxisKey = input.required<keyof T>();
+  readonly seriesName = input<string>('Products');
   readonly seriesKey = input.required<keyof T>();
 
   protected readonly currentTheme: Signal<ChartTheme> = this.#chartThemeService.activeChartTheme;
@@ -108,7 +109,7 @@ export class BarChart<T> {
 
       series: [
         {
-          name: 'Products',
+          name: this.seriesName(),
           type: 'bar',
 
           data: this.data().map((item) => item[seriesKey]),

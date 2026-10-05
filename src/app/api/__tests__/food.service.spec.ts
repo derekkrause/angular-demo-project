@@ -35,4 +35,18 @@ describe('FoodService API contract', () => {
       .flush('Unavailable', { status: 503, statusText: 'Unavailable' });
     expect(failed).toHaveBeenCalledWith(expect.objectContaining({ status: 503 }));
   });
+  it('requests reported outcomes using the exact outcome field', () => {
+    const response: IResult<TermCount> = {
+      meta: { disclaimer: '', terms: '', license: '', last_updated: '2026-10-04' },
+      results: [{ term: 'Hospitalization', count: 3 }],
+    };
+    const received = vi.fn();
+    service.getReportedFoodOutcomes().subscribe(received);
+    const request = http.expectOne((req) => req.url === 'open-fda/food/event.json');
+    expect(request.request.method).toBe('GET');
+    expect(request.request.params.get('count')).toBe('outcomes.exact');
+    expect(request.request.params.get('limit')).toBe('1000');
+    request.flush(response);
+    expect(received).toHaveBeenCalledWith(response);
+  });
 });

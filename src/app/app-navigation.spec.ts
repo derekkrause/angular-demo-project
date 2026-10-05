@@ -1,3 +1,4 @@
+import { OutcomesReport } from '@features/widgets/outcomes-report/outcomes-report';
 import { provideHttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -12,6 +13,8 @@ import { ProductsReport } from '@features/widgets/products-report/products-repor
 
 @Component({ selector: 'app-products-report', template: 'FDA product categories' })
 class ReportStub {}
+@Component({ selector: 'app-outcomes-report', template: 'Reported Outcomes' })
+class OutcomesStub {}
 describe('Application navigation outcomes', () => {
   let fixture: ComponentFixture<App>;
   let router: Router;
@@ -21,7 +24,10 @@ describe('Application navigation outcomes', () => {
       of(document.createElementNS('http://www.w3.org/2000/svg', 'svg')),
     );
     await TestBed.configureTestingModule({ imports: [App], providers: [provideRouter(routes), provideHttpClient()] })
-      .overrideComponent(Dashboard, { remove: { imports: [ProductsReport] }, add: { imports: [ReportStub] } })
+      .overrideComponent(Dashboard, {
+        remove: { imports: [ProductsReport, OutcomesReport] },
+        add: { imports: [ReportStub, OutcomesStub] },
+      })
       .overrideComponent(Reports, { remove: { imports: [ProductsReport] }, add: { imports: [ReportStub] } })
       .compileComponents();
     fixture = TestBed.createComponent(App);

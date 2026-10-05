@@ -1,0 +1,60 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Reported Outcomes</mat-card-title>
+    @if (!isLoading() && report(); as data) {
+      <mat-card-subtitle>Last Updated: {{ data.meta.last_updated }}</mat-card-subtitle>
+    }
+  </mat-card-header>
+  <mat-card-content [attr.aria-busy]="isLoading()">
+    <p class="report-context">
+      These are reported outcome counts, not unique report totals. Reports may contain multiple outcomes and are
+      unverified. Counts do not establish causation or incidence.
+    </p>
+    <p class="report-context">
+      <a href="https://open.fda.gov/apis/food/event/">About the openFDA adverse-event data</a> for foods, dietary
+      supplements, and cosmetics.
+    </p>
+    @if (isLoading()) {
+      <div class="report-state" role="status" aria-live="polite">
+        <mat-spinner [diameter]="40" aria-label="Loading reported outcomes" />
+        <p>Loading reported outcomes...</p>
+      </div>
+    } @else if (error()) {
+      <div class="report-state">
+        <div role="alert">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <p>Unable to load reported outcomes. Please try again.</p>
+        </div>
+        <button matButton (click)="retry()">Retry</button>
+      </div>
+    } @else if (report()) {
+      @if (outcomes().length) {
+        <app-bar-chart
+          [data]="outcomes()"
+          xAxisKey="count"
+          yAxisKey="term"
+          seriesKey="count"
+          seriesName="Reported outcomes"
+          [style.height.px]="chartHeight()"
+        />
+        <table mat-table [dataSource]="outcomes()">
+          <caption>
+            Reported outcome counts
+          </caption>
+          <ng-container matColumnDef="outcome">
+            <th mat-header-cell *matHeaderCellDef scope="col">Outcome</th>
+            <td mat-cell *matCellDef="let outcome">{{ outcome.term }}</td>
+          </ng-container>
+          <ng-container matColumnDef="count">
+            <th mat-header-cell *matHeaderCellDef scope="col">Reported count</th>
+            <td mat-cell *matCellDef="let outcome">{{ outcome.count | number }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        </table>
+      } @else {
+        <div class="report-state" role="status">No reported outcome data available.</div>
+      }
+    }
+  </mat-card-content>
+</mat-card>

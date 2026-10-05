@@ -15,4 +15,8 @@ export class FoodService {
 
     return this.#http.get<IResult<TermCount>>(OPEN_FDA_PREFIX + 'food/event.json', { params });
   }
+  getReportedFoodOutcomes(): Observable<IResult<TermCount>> {
+    const params = new HttpParams().set('count', 'outcomes.exact').set('limit', '1000');
+    return this.#http.get<IResult<TermCount>>(OPEN_FDA_PREFIX + 'food/event.json', { params });
+  }
 }

@@ -66,4 +66,9 @@ describe('Bar chart presentation', () => {
       tooltip: { textStyle: { color: '#fedcba' } },
     });
   });
+  it('uses the supplied series name for the outcome tooltip', () => {
+    fixture.componentRef.setInput('seriesName', 'Reported outcomes');
+    fixture.detectChanges();
+    expect(chart().options()).toMatchObject({ series: [{ name: 'Reported outcomes' }] });
+  });
 });

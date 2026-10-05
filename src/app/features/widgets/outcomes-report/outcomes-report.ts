@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-import { IResult } from '@api/models/result.interface';
+import { Result } from '@api/models/result.interface';
 import { TermCount } from '@api/models/term-count.interface';
 import { BarChart } from '@shared/charting/components/bar-chart/bar-chart';
 import { OutcomesReportService } from './outcomes-report.service';
@@ -29,7 +29,7 @@ export class OutcomesReport {
   readonly #service: OutcomesReportService = inject(OutcomesReportService);
   protected readonly isLoading: Signal<boolean> = this.#service.isLoading;
   protected readonly error: Signal<Error | undefined> = this.#service.error;
-  protected readonly report: Signal<IResult<TermCount> | undefined> = this.#service.report;
+  protected readonly report: Signal<Result<TermCount> | undefined> = this.#service.report;
   protected readonly outcomes: Signal<TermCount[]> = computed(() =>
     (this.report()?.results ?? [])
       .filter((item) => item.term.trim().length > 0 && item.count > 0)

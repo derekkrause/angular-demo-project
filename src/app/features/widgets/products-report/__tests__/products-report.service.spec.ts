@@ -2,13 +2,13 @@ import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { FoodService } from '@api/food.service';
-import { IResult } from '@api/models/result.interface';
+import { Result } from '@api/models/result.interface';
 import { TermCount } from '@api/models/term-count.interface';
 import { ProductsReportService } from '../products-report.service';
 
 describe('ProductsReportService', () => {
   it('returns undefined before loading and after an error without throwing', async () => {
-    const stream = new Subject<IResult<TermCount>>();
+    const stream = new Subject<Result<TermCount>>();
     TestBed.configureTestingModule({
       providers: [ProductsReportService, { provide: FoodService, useValue: { getAdverseFoodEvents: () => stream } }],
     });

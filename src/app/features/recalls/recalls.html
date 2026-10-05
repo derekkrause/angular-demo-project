@@ -1,0 +1,85 @@
+<section class="recalls-page" aria-labelledby="recalls-title">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">FDA ENFORCEMENT REPORTS</p>
+      <h1 id="recalls-title">Food recalls</h1>
+      <p class="page-summary">Recently classified food recall reports from the FDA.</p>
+    </div>
+    @if (!isLoading() && report(); as data) {
+      <p class="updated">Dataset updated {{ data.meta.last_updated }}</p>
+    }
+  </header>
+
+  <section class="reports" aria-labelledby="reports-title" [attr.aria-busy]="isLoading()">
+    <div class="reports-heading">
+      <h2 id="reports-title">Latest reports</h2>
+      <span>Most recent 20</span>
+    </div>
+
+    <p class="data-note">
+      FDA enforcement reports are updated weekly after recalls are classified. This feed is not a real-time alert or a
+      recall lifecycle tracker; check the
+      <a href="https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts" target="_blank" rel="noopener noreferrer"
+        >FDA recall notices</a
+      >
+      for current consumer guidance.
+    </p>
+
+    @if (isLoading()) {
+      <div class="report-state" role="status" aria-live="polite">
+        <mat-spinner [diameter]="40" aria-label="Loading food recall reports" />
+        <p>Loading recent reports...</p>
+      </div>
+    } @else if (error()) {
+      <div class="report-state">
+        <div role="alert">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <p>Unable to load recall reports. Please try again.</p>
+        </div>
+        <button matButton (click)="retry()">Retry</button>
+      </div>
+    } @else if (report()) {
+      @if (recalls().length) {
+        <div class="recall-list">
+          @for (recall of recalls(); track $index) {
+            <article class="recall-entry">
+              <div class="recall-heading">
+                <span
+                  class="classification"
+                  [class.class-i]="recall.classification === 'Class I'"
+                  [class.class-ii]="recall.classification === 'Class II'"
+                  >{{ recall.classification || 'Classification unavailable' }}</span
+                >
+                <p class="report-date">Report date {{ formatReportDate(recall.report_date) }}</p>
+              </div>
+              <h3>{{ recall.product_description || 'Product description unavailable' }}</h3>
+              <p class="reason">{{ recall.reason_for_recall || 'Reason not provided' }}</p>
+              <dl class="recall-details">
+                @if (recall.recalling_firm) {
+                  <div><dt>Recalling firm</dt><dd>{{ recall.recalling_firm }}</dd></div>
+                }
+                @if (recall.recall_number) {
+                  <div><dt>Recall number</dt><dd>{{ recall.recall_number }}</dd></div>
+                }
+                @if (recall.city || recall.state) {
+                  <div><dt>Firm location</dt><dd>{{ recall.city }}{{ recall.city && recall.state ? ', ' : '' }}{{ recall.state }}</dd></div>
+                }
+                @if (recall.product_quantity) {
+                  <div><dt>Quantity</dt><dd>{{ recall.product_quantity }}</dd></div>
+                }
+                @if (recall.distribution_pattern) {
+                  <div class="distribution"><dt>Distribution</dt><dd>{{ recall.distribution_pattern }}</dd></div>
+                }
+                @if (recall.code_info) {
+                  <div class="distribution"><dt>Product codes</dt><dd>{{ recall.code_info }}</dd></div>
+                }
+              </dl>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="report-state" role="status">No food recall reports are available.</div>
+      }
+    }
+  </section>
+</section>

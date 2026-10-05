@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IResult } from '@api/models/result.interface';
+import { Result } from '@api/models/result.interface';
 import { TermCount } from '@api/models/term-count.interface';
 import { BarChart } from '@shared/charting/components/bar-chart/bar-chart';
 import { OutcomesReport } from '../outcomes-report';
@@ -17,7 +17,7 @@ class ChartStub {
   readonly seriesKey = input.required<string>();
 }
 
-const response: IResult<TermCount> = {
+const response: Result<TermCount> = {
   meta: { disclaimer: '', terms: '', license: '', last_updated: '2026-10-04' },
   results: [
     { term: 'First', count: 5 },

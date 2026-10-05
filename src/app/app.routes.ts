@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadComponent: () => import('@features/reports/reports'),
   },
   {
+    path: 'recalls',
+    title: 'Recalls',
+    loadComponent: () => import('@features/recalls/recalls'),
+  },
+  {
     path: 'not-found',
     pathMatch: 'full',
     title: 'Not Found',

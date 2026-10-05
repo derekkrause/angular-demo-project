@@ -1,14 +1,14 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FoodService } from '@api/food.service';
-import { IResult } from '@api/models/result.interface';
+import { Result } from '@api/models/result.interface';
 import { TermCount } from '@api/models/term-count.interface';
 
 @Injectable()
 export class ProductsReportService {
   readonly #foodService = inject(FoodService);
 
-  readonly #foodAdverseEvents = rxResource<IResult<TermCount>, void>({
+  readonly #foodAdverseEvents = rxResource<Result<TermCount>, void>({
     stream: () => this.#foodService.getAdverseFoodEvents(),
   });
 

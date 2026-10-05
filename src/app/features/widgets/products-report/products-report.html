@@ -1,9 +1,30 @@
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>10 FDA Product Categories</mat-card-title>
-    <mat-card-subtitle>Last Updated: {{ productMeta().last_updated }}</mat-card-subtitle>
+    @if (!isLoading() && report(); as data) {
+      <mat-card-subtitle>Last Updated: {{ data.meta.last_updated }}</mat-card-subtitle>
+    }
   </mat-card-header>
-  <mat-card-content>
-    <app-bar-chart [data]="productResults()" [xAxisKey]="'count'" [yAxisKey]="'term'" [seriesKey]="'count'" />
+  <mat-card-content [attr.aria-busy]="isLoading()">
+    @if (isLoading()) {
+      <div class="report-state" role="status" aria-live="polite">
+        <mat-spinner [diameter]="40" aria-label="Loading report" />
+        <p>Loading report?</p>
+      </div>
+    } @else if (error()) {
+      <div class="report-state">
+        <div role="alert">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <p>Unable to load the report. Please try again.</p>
+        </div>
+        <button matButton (click)="retry()">Retry</button>
+      </div>
+    } @else if (report()) {
+      @if (productResults().length) {
+        <app-bar-chart [data]="productResults()" [xAxisKey]="'count'" [yAxisKey]="'term'" [seriesKey]="'count'" />
+      } @else {
+        <div class="report-state" role="status">No product-category data available.</div>
+      }
+    }
   </mat-card-content>
 </mat-card>

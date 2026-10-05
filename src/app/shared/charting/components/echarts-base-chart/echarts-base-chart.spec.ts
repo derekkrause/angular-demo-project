@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ECharts } from 'echarts/core';
 
 import { ChartTheme } from '../../chart-theme.model';
-import { echarts } from '../../echarts.registry';
+import { ECHARTS_INIT } from '../../echarts.registry';
 import { EchartsBaseChart } from './echarts-base-chart';
 
 describe('EchartsBaseChart', () => {
@@ -36,10 +36,9 @@ describe('EchartsBaseChart', () => {
       observe: vi.fn(),
     };
 
-    vi.spyOn(echarts, 'init').mockReturnValue(chart as ECharts);
     vi.stubGlobal(
       'ResizeObserver',
-      vi.fn((callback: ResizeObserverCallback) => {
+      vi.fn(function (callback: ResizeObserverCallback) {
         resizeObserverCallback = callback;
         return resizeObserver;
       }),
@@ -47,6 +46,7 @@ describe('EchartsBaseChart', () => {
 
     await TestBed.configureTestingModule({
       imports: [EchartsBaseChart],
+      providers: [{ provide: ECHARTS_INIT, useValue: vi.fn(() => chart as ECharts) }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EchartsBaseChart);
@@ -63,8 +63,20 @@ describe('EchartsBaseChart', () => {
     vi.restoreAllMocks();
   });
 
-  it('should create', () => {
+  it('initializes the chart and exposes its accessible description', () => {
     expect(component).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('[role="img"]').getAttribute('aria-label')).toBe('Product totals');
+    expect(chart.setOption).toHaveBeenCalledWith({}, { notMerge: true, lazyUpdate: false });
+  });
+  it('updates the displayed chart when options and its description change', () => {
+    const options = { series: [{ type: 'bar', data: [8] }] };
+    fixture.componentRef.setInput('options', options);
+    fixture.componentRef.setInput('ariaLabel', 'Updated product totals');
+    fixture.detectChanges();
+    expect(chart.setOption).toHaveBeenLastCalledWith(options, { notMerge: true, lazyUpdate: false });
+    expect(fixture.nativeElement.querySelector('[role="img"]').getAttribute('aria-label')).toBe(
+      'Updated product totals',
+    );
   });
 
   it('resizes the chart when its container changes size', () => {

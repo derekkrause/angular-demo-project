@@ -9,6 +9,7 @@
     "watch": "ng build --watch",
     "watch:prod": "ng build --watch --configuration production",
     "test": "ng test",
+    "test:run": "ng test --watch=false",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier --write .",

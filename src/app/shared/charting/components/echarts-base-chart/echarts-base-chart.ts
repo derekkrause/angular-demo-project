@@ -1,7 +1,7 @@
-import { afterNextRender, Component, effect, ElementRef, input, OnDestroy, viewChild } from '@angular/core';
+import { afterNextRender, Component, effect, ElementRef, inject, input, OnDestroy, viewChild } from '@angular/core';
 import { ECharts, EChartsCoreOption } from 'echarts/core';
 import { ChartTheme } from '../../chart-theme.model';
-import { echarts } from '../../echarts.registry';
+import { ECHARTS_INIT } from '../../echarts.registry';
 
 @Component({
   selector: 'app-echarts-base-chart',
@@ -14,6 +14,8 @@ export class EchartsBaseChart implements OnDestroy {
   readonly chartTheme = input.required<ChartTheme>();
 
   readonly chartContainer = viewChild.required<ElementRef<HTMLDivElement>>('chartContainer');
+
+  readonly #createChart: typeof import('echarts/core').init = inject(ECHARTS_INIT);
 
   #chart: ECharts | undefined;
   #resizeObserver: ResizeObserver | undefined;
@@ -46,7 +48,7 @@ export class EchartsBaseChart implements OnDestroy {
   #initializeChart(): void {
     const container = this.chartContainer().nativeElement;
 
-    this.#chart = echarts.init(container, this.chartTheme());
+    this.#chart = this.#createChart(container, this.chartTheme());
 
     this.#resizeObserver = new ResizeObserver(() => {
       this.#chart?.resize();

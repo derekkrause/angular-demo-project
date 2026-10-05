@@ -1,22 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Dashboard } from './dashboard';
-
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { ProductsReport } from '@features/widgets/products-report/products-report';
+import Dashboard from './dashboard';
+@Component({ selector: 'app-products-report', template: 'FDA product categories' })
+class ReportStub {}
 describe('Dashboard', () => {
-  let component: Dashboard;
-  let fixture: ComponentFixture<Dashboard>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Dashboard],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Dashboard);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('includes the product report on this page', async () => {
+    await TestBed.configureTestingModule({ imports: [Dashboard] })
+      .overrideComponent(Dashboard, { remove: { imports: [ProductsReport] }, add: { imports: [ReportStub] } })
+      .compileComponents();
+    const fixture = TestBed.createComponent(Dashboard);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-products-report')?.textContent).toContain('FDA product categories');
   });
 });

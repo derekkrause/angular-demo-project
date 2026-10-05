@@ -1,3 +1,4 @@
+import { InjectionToken } from '@angular/core';
 // Import the echarts core module, which provides the necessary interfaces for using echarts
 // https://echarts.apache.org/handbook/en/basics/import/
 import * as echarts from 'echarts/core';
@@ -39,6 +40,9 @@ echarts.use([
   CanvasRenderer,
 ]);
 
-
-
 export { echarts };
+
+export const ECHARTS_INIT = new InjectionToken<typeof echarts.init>('ECHARTS_INIT', {
+  providedIn: 'root',
+  factory: () => echarts.init,
+});

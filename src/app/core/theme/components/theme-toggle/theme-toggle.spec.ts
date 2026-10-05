@@ -16,9 +16,9 @@ describe('ThemeToggle', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    const menuItem = Array.from(
-      document.body.querySelectorAll<HTMLButtonElement>('button[role="menuitem"]'),
-    ).find((button) => button.getAttribute('aria-label') === ariaLabel);
+    const menuItem = Array.from(document.body.querySelectorAll<HTMLButtonElement>('button[role="menuitem"]')).find(
+      (button) => button.getAttribute('aria-label') === ariaLabel,
+    );
 
     expect(menuItem).toBeTruthy();
 
@@ -66,7 +66,7 @@ describe('ThemeToggle', () => {
   it('updates localStorage when the user selects the system default', async () => {
     await selectTheme('System Default');
 
-    expect(localStorage.getItem('themePreference')).toBe('auto');
+    expect(localStorage.getItem('themePreference')).toBe('system');
   });
 
   it('adds dark-mode to the body when isDarkMode is true', async () => {

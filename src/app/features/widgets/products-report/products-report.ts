@@ -1,32 +1,34 @@
-import { Component, computed, effect, inject } from '@angular/core';
-import { IResult } from '@app/api/models/result.interface';
-import { BarChart } from '@app/shared/charting/components/bar-chart/bar-chart';
-import { ProductsReportService } from './products-report.service';
+import { Component, computed, inject, Signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BarChart } from '@shared/charting/components/bar-chart/bar-chart';
+import { ProductsReportService } from './products-report.service';
+import { IResult } from '@api/models/result.interface';
+import { TermCount } from '@api/models/term-count.interface';
 
 @Component({
   selector: 'app-products-report',
-  imports: [BarChart, MatCardModule],
+  imports: [BarChart, MatButtonModule, MatCardModule, MatIconModule, MatProgressSpinnerModule],
   providers: [ProductsReportService],
   templateUrl: './products-report.html',
   styleUrl: './products-report.scss',
 })
 export class ProductsReport {
-  #reportService = inject(ProductsReportService);
+  readonly #reportService = inject(ProductsReportService);
 
-  productMeta = computed<IResult['meta']>(() => {
-    return this.#reportService.foodAdverseEventResults().meta;
-  });
+  protected readonly isLoading: Signal<boolean> = this.#reportService.isLoading;
+  protected readonly error: Signal<Error | undefined> = this.#reportService.error;
+  protected readonly report: Signal<IResult<TermCount> | undefined> = this.#reportService.foodAdverseEventResults;
+  protected readonly productResults: Signal<TermCount[]> = computed(
+    () =>
+      this.report()
+        ?.results.toSorted((a, b) => a.count - b.count)
+        .slice(-10) ?? [],
+  );
 
-  productResults = computed<IResult['results']>(() => {
-    const results = this.#reportService.foodAdverseEventResults().results;
-
-    return results.sort((a, b) => a.count - b.count).slice(-10);
-  });
-
-  constructor() {
-    effect(() => {
-      console.log('product results: ', this.productResults());
-    });
+  protected retry(): void {
+    this.#reportService.retry();
   }
 }

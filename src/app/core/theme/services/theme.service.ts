@@ -6,7 +6,7 @@ const PREFERS_COLOR_SCHEME_DARK = '(prefers-color-scheme: dark)';
 const DARK_MODE_CLASS_NAME = 'dark-mode';
 
 const initialTheme: Theme = (localStorage.getItem(THEME_PREFERENCE_LOCAL_STORAGE_KEY) as Theme) ?? 'system';
-export const prefersDark: boolean = window.matchMedia?.(PREFERS_COLOR_SCHEME_DARK).matches;
+export const prefersDark: boolean = window.matchMedia?.(PREFERS_COLOR_SCHEME_DARK).matches ?? false;
 
 export type Theme = 'system' | 'dark' | 'light';
 

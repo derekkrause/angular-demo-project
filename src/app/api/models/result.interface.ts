@@ -1,7 +1,6 @@
 import { Meta } from '@api/models/meta.interface';
-import { TermCount } from '@api/models/term-count.interface';
 
-export interface IResult {
+export interface IResult<T> {
   meta: Meta;
-  results: TermCount[];
+  results: T[];
 }

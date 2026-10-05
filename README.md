@@ -80,6 +80,9 @@ Run unit tests:
 pnpm test
 ```
 
+Use `pnpm test:run` for a single run. See the [behavioral test coverage guide](./docs/testing.md)
+for the interactions covered and remaining browser checks. The suite uses Vitest.
+
 Run lint checks:
 
 ```bash
